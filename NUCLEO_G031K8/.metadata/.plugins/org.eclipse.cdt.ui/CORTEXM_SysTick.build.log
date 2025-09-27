@@ -1,0 +1,10 @@
+21:48:15 **** Incremental Build of configuration Debug for project CORTEXM_SysTick ****
+make -j12 all 
+arm-none-eabi-size  CORTEXM_SysTick.elf 
+   text	   data	    bss	    dec	    hex	filename
+   5420	     24	   1568	   7012	   1b64	CORTEXM_SysTick.elf
+Finished building: default.size.stdout
+ 
+
+21:48:15 Build Finished. 0 errors, 0 warnings. (took 189ms)
+

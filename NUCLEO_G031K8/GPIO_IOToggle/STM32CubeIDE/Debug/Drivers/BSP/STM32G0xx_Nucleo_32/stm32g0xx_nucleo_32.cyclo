@@ -1,0 +1,6 @@
+C:/Users/akash/Documents/git/STMPlayground/NUCLEO_G031K8/GPIO_IOToggle/Drivers/BSP/STM32G0xx_Nucleo_32/stm32g0xx_nucleo_32.c:101:10:BSP_GetVersion	1
+C:/Users/akash/Documents/git/STMPlayground/NUCLEO_G031K8/GPIO_IOToggle/Drivers/BSP/STM32G0xx_Nucleo_32/stm32g0xx_nucleo_32.c:117:6:BSP_LED_Init	1
+C:/Users/akash/Documents/git/STMPlayground/NUCLEO_G031K8/GPIO_IOToggle/Drivers/BSP/STM32G0xx_Nucleo_32/stm32g0xx_nucleo_32.c:142:6:BSP_LED_DeInit	1
+C:/Users/akash/Documents/git/STMPlayground/NUCLEO_G031K8/GPIO_IOToggle/Drivers/BSP/STM32G0xx_Nucleo_32/stm32g0xx_nucleo_32.c:160:6:BSP_LED_On	1
+C:/Users/akash/Documents/git/STMPlayground/NUCLEO_G031K8/GPIO_IOToggle/Drivers/BSP/STM32G0xx_Nucleo_32/stm32g0xx_nucleo_32.c:172:6:BSP_LED_Off	1
+C:/Users/akash/Documents/git/STMPlayground/NUCLEO_G031K8/GPIO_IOToggle/Drivers/BSP/STM32G0xx_Nucleo_32/stm32g0xx_nucleo_32.c:184:6:BSP_LED_Toggle	1

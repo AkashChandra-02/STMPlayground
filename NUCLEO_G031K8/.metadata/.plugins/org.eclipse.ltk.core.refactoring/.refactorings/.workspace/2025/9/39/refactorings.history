@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;Git_Hash_Storage&apos;" deleteContents="true" description="Delete resource &apos;Git_Hash_Storage&apos;" element1="/Git_Hash_Storage" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1758987270111"/>&#x0A;<refactoring comment="Delete resource &apos;CORTEXM_SysTick&apos;" deleteContents="false" description="Delete resource &apos;CORTEXM_SysTick&apos;" element1="/CORTEXM_SysTick" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1758987276979"/>
+</session>

@@ -24,10 +24,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "git_hash.h"
 /* USER CODE END Includes */
 
-/* Private typedef -----------------------------------------------------------*/
+/* Private typedef ---- -------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
 /* USER CODE END PTD */
@@ -100,8 +100,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
-    HAL_Delay(100);
-
+    HAL_Delay(150);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

@@ -101,8 +101,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
-    HAL_Delay(150);
-    char a = git_hash[0];
+    HAL_UART_Transmit(&huart2, (const uint8_t*) git_hash, sizeof(git_hash), 100);
+    HAL_Delay(500);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

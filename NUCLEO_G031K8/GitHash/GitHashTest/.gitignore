@@ -1,5 +1,5 @@
 build
 mx.scratch
 !.settings
-# Core/Inc/git_hash.h
-# Core/Src/git_hash.c
+Core/Inc/git_hash.h
+# Core/Inc/git_hash.c

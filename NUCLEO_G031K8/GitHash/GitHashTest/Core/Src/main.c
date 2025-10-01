@@ -56,7 +56,8 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+const char git_hash[250] = GIT_COMMIT_HASH;
+const char git_branch[250] = GIT_BRANCH;
 /* USER CODE END 0 */
 
 /**
@@ -101,6 +102,7 @@ int main(void)
 
     HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
     HAL_Delay(150);
+    char a = git_hash[0];
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

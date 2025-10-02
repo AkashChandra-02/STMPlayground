@@ -18,7 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "stm32g0xx_hal_gpio.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -27,7 +26,7 @@
 #include "git_hash.h"
 /* USER CODE END Includes */
 
-/* Private typedef ---- -------------------------------------------------------*/
+/* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
 /* USER CODE END PTD */
@@ -45,19 +44,19 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint32_t systime = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+void send_uart_new_line(UART_HandleTypeDef *, uint32_t);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-const char git_hash[250] = GIT_COMMIT_HASH;
-const char git_branch[250] = GIT_BRANCH;
+const char git_hash[GIT_HASH_LEN] = GIT_COMMIT_HASH;
+const char git_branch[GIT_BRANCH_LEN] = GIT_BRANCH;
 /* USER CODE END 0 */
 
 /**
@@ -100,10 +99,13 @@ int main(void)
   {
     /* USER CODE END WHILE */
 
+    /* USER CODE BEGIN 3 */
     HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
     HAL_UART_Transmit(&huart2, (const uint8_t*) git_hash, sizeof(git_hash), 100);
+    send_uart_new_line(&huart2, 1);
+    HAL_UART_Transmit(&huart2, (const uint8_t*) git_branch, sizeof(git_branch), 100);
+    send_uart_new_line(&huart2, 1);
     HAL_Delay(500);
-    /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }
@@ -149,7 +151,10 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void send_uart_new_line(UART_HandleTypeDef * huart, uint32_t timeout){
+  const char new_line_char = '\n';
+  HAL_UART_Transmit(huart, (const uint8_t*) &new_line_char, sizeof(new_line_char), timeout);
+}
 /* USER CODE END 4 */
 
 /**

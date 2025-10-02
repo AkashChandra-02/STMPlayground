@@ -33,8 +33,6 @@ configure_file(
   ${CMAKE_SOURCE_DIR}/Core/Inc/git_hash.h
 )
 
-include_directories(${CMAKE_BINARY_DIR}/generated)
-
 # STM32CubeMX generated include paths
 set(MX_Include_Dirs
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Inc

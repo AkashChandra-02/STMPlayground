@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "git_hash.h"
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -33,7 +34,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define ASCII_ESC 27
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -51,12 +52,15 @@ uint32_t systime = 0;
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 void send_uart_new_line(UART_HandleTypeDef *, uint32_t);
+
+void send_systime(UART_HandleTypeDef *, uint32_t);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 const char git_hash[GIT_HASH_LEN] = GIT_COMMIT_HASH;
 const char git_branch[GIT_BRANCH_LEN] = GIT_BRANCH;
+const char cat[] =  "meow";
 /* USER CODE END 0 */
 
 /**
@@ -95,6 +99,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  HAL_UART_Transmit(&huart2, (const uint8_t*) cat, sizeof(cat), 100);
   while (1)
   {
     /* USER CODE END WHILE */
@@ -105,6 +110,11 @@ int main(void)
     send_uart_new_line(&huart2, 1);
     HAL_UART_Transmit(&huart2, (const uint8_t*) git_branch, sizeof(git_branch), 100);
     send_uart_new_line(&huart2, 1);
+
+    send_systime(&huart2, systime);
+    // HAL_UART_Transmit(&huart2, (const uint8_t*) systime, sizeof(systime), 100);
+    send_uart_new_line(&huart2, 1);
+
     HAL_Delay(500);
   }
   /* USER CODE END 3 */
@@ -154,6 +164,11 @@ void SystemClock_Config(void)
 void send_uart_new_line(UART_HandleTypeDef * huart, uint32_t timeout){
   const char new_line_char = '\n';
   HAL_UART_Transmit(huart, (const uint8_t*) &new_line_char, sizeof(new_line_char), timeout);
+}
+void send_systime(UART_HandleTypeDef * huart, uint32_t systime){
+  char str[32];
+  sprintf(str, "%e", (int) systime);
+  HAL_UART_Transmit(huart, (const uint8_t*) &str, sizeof(str), 100);
 }
 /* USER CODE END 4 */
 

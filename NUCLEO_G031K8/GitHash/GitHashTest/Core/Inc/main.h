@@ -72,6 +72,21 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN Private defines */
 extern uint32_t systime;
+#define __JOIN_UINT8_INTO_UINT16__(__MSB__, __LSB__) ((__MSB__ << 8) | __LSB__)
+#define TS_CAL_30_LSB_ADDR (uint8_t *) 0x1FFF75A8
+#define TS_CAL_30_MSB_ADDR (uint8_t *) 0x1FFF75A9
+
+#define TS_CAL_130_LSB_ADDR (uint8_t *) 0x1FFF75CA
+#define TS_CAL_130_MSB_ADDR (uint8_t *) 0x1FFF75CB
+
+#define VREF_30_LSB_ADDR (uint8_t *) 0x1FFF75AA
+#define VREF_30_MSB_ADDR (uint8_t *) 0x1FFF75AB
+
+#define TS_CAL_30_VAL __JOIN_UINT8_INTO_UINT16__((uint8_t) *(TS_CAL_30_MSB_ADDR), (uint8_t) *(TS_CAL_30_LSB_ADDR))
+#define TS_CAL_130_VAL __JOIN_UINT8_INTO_UINT16__((uint8_t) *(TS_CAL_130_MSB_ADDR), (uint8_t) *(TS_CAL_130_LSB_ADDR))
+#define VREF_CAL_30_VAL __JOIN_UINT8_INTO_UINT16__((uint8_t) *(VREF_30_MSB_ADDR), (uint8_t) *(VREF_30_LSB_ADDR))
+
+#define VREF_VALUE 1.212f
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

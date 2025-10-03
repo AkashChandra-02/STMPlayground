@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "adc.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -34,7 +35,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define ASCII_ESC 27
+#define MAX_SYSTIME_STR_LEN 250
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -54,6 +55,9 @@ void SystemClock_Config(void);
 void send_uart_new_line(UART_HandleTypeDef *, uint32_t);
 
 void send_systime(UART_HandleTypeDef *, uint32_t);
+void send_int(UART_HandleTypeDef *, char*, uint32_t);
+void send_float(UART_HandleTypeDef *, char*, float);
+uint16_t poll_adc_channel(uint32_t);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -61,6 +65,15 @@ void send_systime(UART_HandleTypeDef *, uint32_t);
 const char git_hash[GIT_HASH_LEN] = GIT_COMMIT_HASH;
 const char git_branch[GIT_BRANCH_LEN] = GIT_BRANCH;
 const char cat[] =  "meow";
+uint16_t ts_30_val = 0;//TS_CAL_30_VAL;
+uint16_t ts_130_val = 0;//TS_CAL_130_VAL;
+uint16_t vref_val = 0;//VREF_CAL_30_VAL;
+uint16_t temp_sensor = 0, vref_int = 0;
+char temp_label[] = "temp raw";
+char vref_label[] = "vref raw";
+char nice_vref[] = "Vref value";
+char nice_temp[] = "Temp value";
+float curr_temp, curr_vref;
 /* USER CODE END 0 */
 
 /**
@@ -80,7 +93,9 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  ts_30_val = TS_CAL_30_VAL;
+  ts_130_val = TS_CAL_130_VAL;
+  vref_val = VREF_CAL_30_VAL;
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -93,6 +108,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -115,7 +131,22 @@ int main(void)
     // HAL_UART_Transmit(&huart2, (const uint8_t*) systime, sizeof(systime), 100);
     send_uart_new_line(&huart2, 1);
 
-    HAL_Delay(500);
+    vref_int = poll_adc_channel(ADC_CHANNEL_VREFINT);
+    temp_sensor = poll_adc_channel(ADC_CHANNEL_TEMPSENSOR);
+
+    send_int(&huart2, vref_label, (uint32_t) vref_int);
+    send_uart_new_line(&huart2, 1);
+    send_int(&huart2, temp_label, (uint32_t) temp_sensor);
+    send_uart_new_line(&huart2, 1);
+    curr_vref = 3.3 * vref_int/4095;
+    curr_temp = 30 + (((ts_130_val-ts_30_val)/100) * (temp_sensor/4095.0)); 
+
+    send_float(&huart2, nice_temp, curr_temp);
+    send_uart_new_line(&huart2, 1);
+    send_float(&huart2, nice_vref, curr_vref);
+    send_uart_new_line(&huart2, 1);
+       
+    // HAL_Delay(500);
   }
   /* USER CODE END 3 */
 }
@@ -166,9 +197,71 @@ void send_uart_new_line(UART_HandleTypeDef * huart, uint32_t timeout){
   HAL_UART_Transmit(huart, (const uint8_t*) &new_line_char, sizeof(new_line_char), timeout);
 }
 void send_systime(UART_HandleTypeDef * huart, uint32_t systime){
-  char str[32];
-  sprintf(str, "%e", (int) systime);
-  HAL_UART_Transmit(huart, (const uint8_t*) &str, sizeof(str), 100);
+  char str[MAX_SYSTIME_STR_LEN];
+  uint8_t str_len = MAX_SYSTIME_STR_LEN;
+  for(int i = 0; i < MAX_SYSTIME_STR_LEN; i++){
+    str[i] = 0;
+  }
+  sprintf(str, "Systime: %u", (int) systime);
+  // find last non null char
+  for(int i = 0; i < MAX_SYSTIME_STR_LEN; i++){
+    if(str[i] == 0){
+      str_len = i;
+      i = MAX_SYSTIME_STR_LEN+100;
+    }
+  }
+  HAL_UART_Transmit(huart, (const uint8_t*) &str, str_len, 100);
+}
+
+void send_int(UART_HandleTypeDef * huart, char* label, uint32_t value){
+  char str[MAX_SYSTIME_STR_LEN];
+  uint8_t str_len = MAX_SYSTIME_STR_LEN;
+  for(int i = 0; i < MAX_SYSTIME_STR_LEN; i++){
+    str[i] = 0;
+  }
+  sprintf(str, "%s: %u", label, (int) value);
+  // find last non null char
+  for(int i = 0; i < MAX_SYSTIME_STR_LEN; i++){
+    if(str[i] == 0){
+      str_len = i;
+      i = MAX_SYSTIME_STR_LEN+100;
+    }
+  }
+  HAL_UART_Transmit(huart, (const uint8_t*) &str, str_len, 100);
+}
+
+void send_float(UART_HandleTypeDef * huart, char* label, float value){
+  char str[MAX_SYSTIME_STR_LEN];
+  uint8_t str_len = MAX_SYSTIME_STR_LEN;
+  for(int i = 0; i < MAX_SYSTIME_STR_LEN; i++){
+    str[i] = 0;
+  }
+  sprintf(str, "%s: %f", label, value);
+  // find last non null char
+  for(int i = 0; i < MAX_SYSTIME_STR_LEN; i++){
+    if(str[i] == 0){
+      str_len = i;
+      i = MAX_SYSTIME_STR_LEN+100;
+    }
+  }
+  HAL_UART_Transmit(huart, (const uint8_t*) &str, str_len, 100);
+}
+
+uint16_t poll_adc_channel(uint32_t channel){
+  
+  ADC_ChannelConfTypeDef sConfig = {0};
+  sConfig.Channel = channel;//ADC_CHANNEL_TEMPSENSOR;//ADC_CHANNEL_VREFINT
+  sConfig.Rank = ADC_REGULAR_RANK_1;
+  sConfig.SamplingTime = ADC_SAMPLINGTIME_COMMON_1;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  HAL_ADC_Start(&hadc1);
+  HAL_ADC_PollForConversion(&hadc1, 10);
+  uint16_t return_val = HAL_ADC_GetValue(&hadc1);
+  HAL_ADC_Stop(&hadc1);
+  return return_val;
 }
 /* USER CODE END 4 */
 

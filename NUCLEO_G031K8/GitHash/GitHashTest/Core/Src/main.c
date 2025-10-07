@@ -236,7 +236,11 @@ void send_float(UART_HandleTypeDef * huart, char* label, float value){
   for(int i = 0; i < MAX_SYSTIME_STR_LEN; i++){
     str[i] = 0;
   }
-  sprintf(str, "%s: %f", label, value);
+  // Need to do this cuz no sprintf support in native embedded dev envrioment
+  // https://stackoverflow.com/questions/905928/using-floats-with-sprintf-in-embedded-c
+  int intVal = value;
+  int tmpFrac = 1000*(value - intVal);
+  sprintf(str, "%s: %d.%04d", label, intVal, tmpFrac);
   // find last non null char
   for(int i = 0; i < MAX_SYSTIME_STR_LEN; i++){
     if(str[i] == 0){

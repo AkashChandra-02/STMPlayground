@@ -1,0 +1,9 @@
+[CortexM7:ProjectFiles]
+HeaderPath=
+[CortexM7:Others]
+HALModule=
+[CortexM7:Groups]
+Doc=../README.md;
+
+[CortexM4:Groups]
+Doc=../README.md;

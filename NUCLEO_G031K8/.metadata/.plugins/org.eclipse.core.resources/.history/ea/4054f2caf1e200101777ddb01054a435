@@ -13,7 +13,7 @@ enum semaphore_status{
 };
 
 struct semaphore{
-	uint32_t value;
+	uint8_t value;
 	semaphore_status status;
 };
 

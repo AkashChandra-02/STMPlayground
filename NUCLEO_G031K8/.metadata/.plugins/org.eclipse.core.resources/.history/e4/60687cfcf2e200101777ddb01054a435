@@ -18,13 +18,14 @@ int init_semaphore(semaphore* s){
 }
 
 int lock(semaphore* s, uint32_t value){
-	do{
-		__STREXB((locked), (&(s->status)));
-		__STREXB((value), (&(s->value)));
-	}while(__LDREXB(&(s->status)) != freed);
+	s->value = value;
+	s->status = locked;
 }
 
-int unlock(semaphore* s){
-	__STREXB((freed), (&(s->status)));
-	__STREXB((NULL), (&(s->value)));
+int unlock(){
+
+}
+
+int free(){
+
 }

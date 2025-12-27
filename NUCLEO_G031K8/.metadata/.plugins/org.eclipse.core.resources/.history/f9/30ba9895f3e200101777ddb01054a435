@@ -28,3 +28,7 @@ int unlock(semaphore* s){
 	__STREXB((freed), (&(s->status)));
 	__STREXB((NULL), (&(s->value)));
 }
+
+int free(){
+
+}

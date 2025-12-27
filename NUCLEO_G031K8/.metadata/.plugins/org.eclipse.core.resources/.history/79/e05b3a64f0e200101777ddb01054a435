@@ -8,13 +8,20 @@
 #ifndef INC_LOCK_H_
 #define INC_LOCK_H_
 enum semaphore_status{
-	locked,
-	freed
+	init,
+	freed,
+	error
+};
+
+enum semaphore_value{
+	init,
+	freed,
+	error
 };
 
 struct semaphore{
-	uint32_t value;
-	semaphore_status status;
+	semaphore_value value;
+	semaphore_status sema;
 };
 
 #endif /* INC_LOCK_H_ */

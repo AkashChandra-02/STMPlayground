@@ -1,0 +1,29 @@
+/*
+ * lock.c
+ *
+ *  Created on: Dec 9, 2025
+ *      Author: akash
+ */
+
+
+
+	// LDREX/STREX
+	// __LDREXB(addr);
+	// __STREXB((val), (addr)))
+	//  __CLREX();
+
+int init_semaphore(){
+
+}
+
+int lock(){
+
+}
+
+int unlock(){
+
+}
+
+int free(){
+
+}

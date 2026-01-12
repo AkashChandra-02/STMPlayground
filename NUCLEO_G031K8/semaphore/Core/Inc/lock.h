@@ -5,16 +5,8 @@
  *      Author: akash
  */
 
+
 #ifndef INC_LOCK_H_
 #define INC_LOCK_H_
-enum semaphore_status{
-	locked,
-	freed
-};
-
-struct semaphore{
-	uint32_t value;
-	semaphore_status status;
-};
 
 #endif /* INC_LOCK_H_ */

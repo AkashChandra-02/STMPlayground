@@ -1,0 +1,35 @@
+/*
+ * lock.c
+ *
+ *  Created on: Dec 9, 2025
+ *      Author: akash
+ */
+
+
+
+	// LDREX/STREX
+	// __LDREXB(addr);
+	// __STREXB((val), (addr)))
+	// __CLREX();
+
+int init_semaphore(semaphore* s){
+	s->value = NULL;
+	s->status = freed;
+}
+
+int lock(semaphore* s, uint32_t value){
+	do{
+		__STREXB((locked), (&(s->status)));
+		__STREXB((value), (&(s->value)));
+	}while(__LDREXB(&(s->status)) != freed);
+	return 1;
+}
+
+int check_for_free(semaphore* s){
+	return __LDREXB(&(s->status)) == freed? 1 : 0;
+}
+
+int unlock(semaphore* s){
+	__STREXB((freed), (&(s->status)));
+	__STREXB((NULL), (&(s->value)));
+}

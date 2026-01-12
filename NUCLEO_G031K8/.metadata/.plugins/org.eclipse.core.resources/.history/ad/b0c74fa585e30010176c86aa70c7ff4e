@@ -1,0 +1,22 @@
+/*
+ * lock.h
+ *
+ *  Created on: Dec 9, 2025
+ *      Author: akash
+ */
+
+#include "main.h"
+
+#ifndef INC_LOCK_H_
+#define INC_LOCK_H_
+enum semaphore_status{
+	locked = 0xff,
+	freed = 0x00
+};
+
+struct semaphore{
+	uint8_t value;
+	semaphore_status status;
+};
+
+#endif /* INC_LOCK_H_ */

@@ -46,7 +46,7 @@ TIM_HandleTypeDef htim2;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+#define ROUND 1
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -320,7 +320,13 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+uint32_t HAL_GetTick(void)
+{
+	if(ROUND){
+		return uwTick & 0xFF;
+	}
+  return uwTick;
+}
 /* USER CODE END 4 */
 
 /**

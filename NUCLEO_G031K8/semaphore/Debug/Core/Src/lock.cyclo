@@ -1,0 +1,6 @@
+../Core/Src/lock.c:25:5:init_semaphore	1
+../Core/Src/lock.c:30:5:spin_lock	2
+../Core/Src/lock.c:38:5:lock	1
+../Core/Src/lock.c:44:5:check_for_free	1
+../Core/Src/lock.c:48:9:get_value	2
+../Core/Src/lock.c:56:5:unlock	1
